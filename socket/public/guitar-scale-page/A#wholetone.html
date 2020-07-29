@@ -1,0 +1,576 @@
+<!doctype html>
+<html>
+  <head>
+    <title>A# whole tone - Scalerator Guitar Scale Generator</title>
+    <meta name="description" content="Generates scale fingering charts and tablature for
+				      guitar, bass, banjo, mandolin,
+				      or any stringed, fretted instrument."/>
+    <script type="text/javascript">
+      var imgBase = '/images/';
+    </script>
+    <script type="text/javascript" src="http://www.chorderator.com/javascript/util.js"></script>
+<script type="text/javascript" src="http://www.chorderator.com/javascript/scalerator.js"></script>
+
+    <link rel="StyleSheet" href="http://www.chorderator.com/css/indexCommon.css" type="text/css">
+<link rel="StyleSheet" href="http://www.chorderator.com/css/scaleratorIndex.css" type="text/css">
+<link rel="StyleSheet" href="http://www.chorderator.com/css/scaleratorResults.css" type="text/css">
+
+
+    <style type="text/css">
+
+
+.results {
+   position:relative;
+   width:750px;
+}
+
+table.fretboard {
+   margin:30px 15px 30px 60px;
+   width:630px;
+}
+
+table.fretboard td {
+   height:30px;
+   width:30px;
+}
+
+.labelRequired, .labelOptional, .labelOpen, .labelRoot {
+   font-size:15px;
+   height:30px;
+   width:30px;
+}
+
+.stringLabel {
+   font-size:15px;
+   height:22.2px;
+   width:22.2px;
+}
+
+.selector {
+   background-image:url(/images/transparent.gif);
+   border-color:lightGreen;
+   border-style:solid;
+   cursor:move;
+   position:absolute;
+   height:180px;
+   left:30px;
+   top:15px;
+   width:120px;
+}
+
+.tabDiv {
+   background:white;
+   border-style:none;
+   clear:both;
+   padding: 20px 0 15px 0;
+   position:relative;
+   width:800px;
+}
+
+.staffDiv {
+   background:white;
+   clear:both;
+   padding:15px 0 40px 0;
+   width:800px;
+}
+
+.tabLabel {
+   font-family:serif;
+   font-size:11px; /* 15px */
+   height:11px;
+   left:-9px; /* -13px */
+   position:absolute;
+   text-align:right;
+   vertical-align:middle;
+}
+
+.tab td {
+   height:15px;
+}
+
+.tabNumber { 
+   background:white;
+   font-size:15px; /*20px;*/
+   line-height:15px;
+   height:15px;
+   position:absolute;
+}
+
+.tn-0 {
+    top:67.5px;
+}
+.tn-1 {
+    top:52.5px;
+}
+.tn-2 {
+    top:37.5px;
+}
+.tn-3 {
+    top:22.5px;
+}
+.tn-4 {
+    top:7.5px;
+}
+.tn-5 {
+    top:-7.5px;
+}
+
+.dot {
+   color:#333333;
+   height:30px;
+   vertical-align:middle;
+   position:absolute;
+   font-size:30px;
+   top:86.4px;
+}
+
+.numeral {
+   color:#666666;
+   text-align:center;
+   position:absolute;
+   font-size:12px;
+   width:60px;
+   top:0;
+}
+
+.numeral-3 {
+  left:120px;
+}
+.dot-3 {
+  left:127.5px;
+}
+.numeral-5 {
+  left:180px;
+}
+.dot-5 {
+  left:187.5px;
+}
+.numeral-7 {
+  left:240px;
+}
+.dot-7 {
+  left:247.5px;
+}
+.numeral-9 {
+  left:300px;
+}
+.dot-9 {
+  left:307.5px;
+}
+.numeral-12 {
+  left:390px;
+}
+.dot-12 {
+  left:397.5px;
+}
+.numeral-15 {
+  left:480px;
+}
+.dot-15 {
+  left:487.5px;
+}
+
+.dot-12-top {
+  left:397.5px;
+  top:56.4px;
+}
+
+.dot-12-bottom {
+  left:397.5px;
+  top:116.4px;
+}
+
+.fret-circle {
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+    box-sizing:border-box;
+    position:absolute;
+
+   font-size:15px;
+   text-align:center;
+   vertical-align:bottom;
+   line-height:30px;
+    color:white;
+    background:black;
+}
+
+.string0 {top:165.0px} .string1 {top:135.0px} .string2 {top:105.0px} .string3 {top:75.0px} .string4 {top:45.0px} .string5 {top:15.0px} 
+.fret0 {left:30.0px} .fret1 {left:60.0px} .fret2 {left:90.0px} .fret3 {left:120.0px} .fret4 {left:150.0px} .fret5 {left:180.0px} .fret6 {left:210.0px} .fret7 {left:240.0px} .fret8 {left:270.0px} .fret9 {left:300.0px} .fret10 {left:330.0px} .fret11 {left:360.0px} .fret12 {left:390.0px} .fret13 {left:420.0px} .fret14 {left:450.0px} .fret15 {left:480.0px} .fret16 {left:510.0px} .fret17 {left:540.0px} .fret18 {left:570.0px} .fret19 {left:600.0px} .fret20 {left:630.0px} .fret21 {left:660.0px} 
+
+.fret-circle.open {
+    border:1px solid black;
+    background:white;
+    color:black;
+}
+
+.fret-circle.root {
+    background:red;
+    color:black;
+}
+
+.fret-circle.openroot {
+    border:1px solid red;
+    background:white;
+    color:black;
+}
+
+.fret-circle.high {
+    background:#6F616F;
+    color:#66FF00;
+}
+
+.fret-circle.open.high {
+    border:1px solid #808080;
+    color:green;
+    background:white;
+}
+
+.fret-circle.root.high {
+    background:#FE616F;
+    color:#66ff00;
+}
+
+.fret-circle.openroot.high {
+    border:1px solid #FE616F;
+    color:green;
+    background:white;
+}
+
+    </style>
+  </head>
+
+  <body style="background:white"
+	onMouseMove="javascript:mouseMove(event.clientX)"
+	onMouseUp="javascript:mouseUp(event.clientX)"
+	onLoad="javascript:initPage(30, 30, 6, new Array('A#', 'C', 'D', 'E', 'F#', 'G#'), 15,0,1)">
+
+    <center>
+      <div id="frame">
+	<div id="content">
+      
+   <div class="chicletSection">
+     <h1>
+       <a href="http://www.scalerator.com/">Scalerator</a>
+     </h1>
+     <h2>
+       A# whole tone (Guitar Standard tuning)
+     </h2>
+     
+     <div class="selectors">
+       <a href="http://www.chorderator.com/" id="chorderatorDesc" class="subDesc">
+	 Chorderator
+       </a>
+       <a href="http://www.scalerator.com/" id="scaleratorDesc" class="mainDesc">
+	 Scalerator
+       </a>
+       <a href="http://www.chorderator.com/designer" id="designerDesc" class="subDesc">
+	 Chord Designer
+       </a>
+       <a href="http://store.guitarator.com" id="toolboxDesc" class="subDesc">
+	 Guitarator Toolbox
+       </a>
+       <a href="http://www.guitarator.com" id="guitaratorDesc" class="sideDesc">
+	 More...
+       </a>
+       <script type="text/javascript">
+	 var bgColor = '#0072bb';
+	 var fgColor = 'white';
+       </script>
+
+       <div class="activeApp">
+       </div>
+     </div> 
+   </div> 
+
+
+      <center>
+	<div id="id_tabMenuArea" class="tabMenuArea" style="text-align:left">
+	  <a class="activeTab" id="id_instructions_tab"
+	    href="#" onclick="javascript:return selectTabMenu(this)">Instructions</a>
+	  
+	  <a class="menuTab" id="id_relatedScales_tab"
+	    href="#" onclick="javascript:return selectTabMenu(this)">Related Scales</a>
+	  
+	  <a class="menuTab" id="id_relatedChords_tab"
+	    href="#" onclick="javascript:return selectTabMenu(this)">Related chords</a>
+	  
+	  <div id="id_instructions" class="tabMenuBody" style="display:block">
+	    To see the scale centered on any portion of the fretboard
+	    use your mouse to drag the green outline left or
+	    right. The tablature and standard musical notation for the
+	    scale will be shown below.
+	  </div>
+	  <div id="id_relatedScales" class="tabMenuBody" style="display:none">
+	    Sorry, I couldn't find any related scales.
+	  </div>
+	  <div id="id_relatedChords" class="tabMenuBody" style="display:none">
+	    <span style="font-size:80%">Chords from this scale's notes: <a href="http://www.chorderator.com/gen?chordName=A%23aug&amp;tuning=EADGBE">A#aug</a>, <a href="http://www.chorderator.com/gen?chordName=Caug&amp;tuning=EADGBE">Caug</a>, <a href="http://www.chorderator.com/gen?chordName=Daug&amp;tuning=EADGBE">Daug</a>, <a href="http://www.chorderator.com/gen?chordName=Eaug&amp;tuning=EADGBE">Eaug</a>, <a href="http://www.chorderator.com/gen?chordName=F%23aug&amp;tuning=EADGBE">F#aug</a>, <a href="http://www.chorderator.com/gen?chordName=G%23aug&amp;tuning=EADGBE">G#aug</a>, <a href="http://www.chorderator.com/gen?chordName=A%23aug7&amp;tuning=EADGBE">A#aug7</a>, <a href="http://www.chorderator.com/gen?chordName=Caug7&amp;tuning=EADGBE">Caug7</a>, <a href="http://www.chorderator.com/gen?chordName=Daug7&amp;tuning=EADGBE">Daug7</a>, <a href="http://www.chorderator.com/gen?chordName=Eaug7&amp;tuning=EADGBE">Eaug7</a>, <a href="http://www.chorderator.com/gen?chordName=F%23aug7&amp;tuning=EADGBE">F#aug7</a>, <a href="http://www.chorderator.com/gen?chordName=G%23aug7&amp;tuning=EADGBE">G#aug7</a></span>
+	  </div>
+	</div>
+      </center>
+
+  <center>
+
+    <center>
+      <div class="promo">
+	<a href="Try the Guitarator Toolbox"><img src="/images/icon64x64.png" alt="" /></a>
+	Want to hear these scales? <a href="Try the Guitarator Toolbox">Try the Guitarator Toolbox</a>!
+      </div>
+    </center>
+
+
+
+  <div class="results"  unselectable="on" onselectstart="return false;">
+   <div class="scale">
+      <table class="fretboard" id="id_fretboard">
+        <tr> <td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td> </tr>
+        <tr> <td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td> </tr>
+        <tr> <td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td> </tr>
+        <tr> <td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td> </tr>
+        <tr> <td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td><td> </tr>
+      </table>
+
+		<div class="dot dot-3">&#x25cf;</div>
+		<div class="numeral numeral-3">III</div>
+		<div class="dot dot-5">&#x25cf;</div>
+		<div class="numeral numeral-5">V</div>
+		<div class="dot dot-7">&#x25cf;</div>
+		<div class="numeral numeral-7">VII</div>
+		<div class="dot dot-9">&#x25cf;</div>
+		<div class="numeral numeral-9">IX</div>
+		<div class="numeral numeral-12">XII</div>
+		<div class="dot dot-15">&#x25cf;</div>
+		<div class="numeral numeral-15">XV</div>
+		<div class="dot dot-12-top">&#x25cf;</div>
+		<div class="dot dot-12-bottom">&#x25cf;</div>
+
+      <div class="stringLabel" style="top:172px">E</div>
+    <div class="fret-circle open fret0 string0" title="E - 7th string, open string" id="note-0-0">E</div>
+    <div class="fret-circle  fret2 string0" title="F# - 7th string, 2nd fret" id="note-0-2">F#</div>
+    <div class="fret-circle  fret4 string0" title="G# - 7th string, 4th fret" id="note-0-4">G#</div>
+    <div class="fret-circle root fret6 string0" title="A# - 7th string, 6th fret" id="note-0-6">A#</div>
+    <div class="fret-circle  fret8 string0" title="C - 7th string, 8th fret" id="note-0-8">C</div>
+    <div class="fret-circle  fret10 string0" title="D - 7th string, 10th fret" id="note-0-10">D</div>
+    <div class="fret-circle  fret12 string0" title="E - 7th string, 12th fret" id="note-0-12">E</div>
+    <div class="fret-circle  fret14 string0" title="F# - 7th string, 14th fret" id="note-0-14">F#</div>
+    <div class="fret-circle  fret16 string0" title="G# - 7th string, 16th fret" id="note-0-16">G#</div>
+    <div class="fret-circle root fret18 string0" title="A# - 7th string, 18th fret" id="note-0-18">A#</div>
+    <div class="fret-circle  fret20 string0" title="C - 7th string, 20th fret" id="note-0-20">C</div>
+      <div class="stringLabel" style="top:142px">A</div>
+    <div class="fret-circle root fret1 string1" title="A# - 6th string, 1st fret" id="note-1-1">A#</div>
+    <div class="fret-circle  fret3 string1" title="C - 6th string, 3rd fret" id="note-1-3">C</div>
+    <div class="fret-circle  fret5 string1" title="D - 6th string, 5th fret" id="note-1-5">D</div>
+    <div class="fret-circle  fret7 string1" title="E - 6th string, 7th fret" id="note-1-7">E</div>
+    <div class="fret-circle  fret9 string1" title="F# - 6th string, 9th fret" id="note-1-9">F#</div>
+    <div class="fret-circle  fret11 string1" title="G# - 6th string, 11th fret" id="note-1-11">G#</div>
+    <div class="fret-circle root fret13 string1" title="A# - 6th string, 13th fret" id="note-1-13">A#</div>
+    <div class="fret-circle  fret15 string1" title="C - 6th string, 15th fret" id="note-1-15">C</div>
+    <div class="fret-circle  fret17 string1" title="D - 6th string, 17th fret" id="note-1-17">D</div>
+    <div class="fret-circle  fret19 string1" title="E - 6th string, 19th fret" id="note-1-19">E</div>
+    <div class="fret-circle  fret21 string1" title="F# - 6th string, 21th fret" id="note-1-21">F#</div>
+      <div class="stringLabel" style="top:112px">D</div>
+    <div class="fret-circle open fret0 string2" title="D - 5th string, open string" id="note-2-0">D</div>
+    <div class="fret-circle  fret2 string2" title="E - 5th string, 2nd fret" id="note-2-2">E</div>
+    <div class="fret-circle  fret4 string2" title="F# - 5th string, 4th fret" id="note-2-4">F#</div>
+    <div class="fret-circle  fret6 string2" title="G# - 5th string, 6th fret" id="note-2-6">G#</div>
+    <div class="fret-circle root fret8 string2" title="A# - 5th string, 8th fret" id="note-2-8">A#</div>
+    <div class="fret-circle  fret10 string2" title="C - 5th string, 10th fret" id="note-2-10">C</div>
+    <div class="fret-circle  fret12 string2" title="D - 5th string, 12th fret" id="note-2-12">D</div>
+    <div class="fret-circle  fret14 string2" title="E - 5th string, 14th fret" id="note-2-14">E</div>
+    <div class="fret-circle  fret16 string2" title="F# - 5th string, 16th fret" id="note-2-16">F#</div>
+    <div class="fret-circle  fret18 string2" title="G# - 5th string, 18th fret" id="note-2-18">G#</div>
+    <div class="fret-circle root fret20 string2" title="A# - 5th string, 20th fret" id="note-2-20">A#</div>
+      <div class="stringLabel" style="top:82px">G</div>
+    <div class="fret-circle  fret1 string3" title="G# - 4th string, 1st fret" id="note-3-1">G#</div>
+    <div class="fret-circle root fret3 string3" title="A# - 4th string, 3rd fret" id="note-3-3">A#</div>
+    <div class="fret-circle  fret5 string3" title="C - 4th string, 5th fret" id="note-3-5">C</div>
+    <div class="fret-circle  fret7 string3" title="D - 4th string, 7th fret" id="note-3-7">D</div>
+    <div class="fret-circle  fret9 string3" title="E - 4th string, 9th fret" id="note-3-9">E</div>
+    <div class="fret-circle  fret11 string3" title="F# - 4th string, 11th fret" id="note-3-11">F#</div>
+    <div class="fret-circle  fret13 string3" title="G# - 4th string, 13th fret" id="note-3-13">G#</div>
+    <div class="fret-circle root fret15 string3" title="A# - 4th string, 15th fret" id="note-3-15">A#</div>
+    <div class="fret-circle  fret17 string3" title="C - 4th string, 17th fret" id="note-3-17">C</div>
+    <div class="fret-circle  fret19 string3" title="D - 4th string, 19th fret" id="note-3-19">D</div>
+    <div class="fret-circle  fret21 string3" title="E - 4th string, 21th fret" id="note-3-21">E</div>
+      <div class="stringLabel" style="top:52px">B</div>
+    <div class="fret-circle  fret1 string4" title="C - 3rd string, 1st fret" id="note-4-1">C</div>
+    <div class="fret-circle  fret3 string4" title="D - 3rd string, 3rd fret" id="note-4-3">D</div>
+    <div class="fret-circle  fret5 string4" title="E - 3rd string, 5th fret" id="note-4-5">E</div>
+    <div class="fret-circle  fret7 string4" title="F# - 3rd string, 7th fret" id="note-4-7">F#</div>
+    <div class="fret-circle  fret9 string4" title="G# - 3rd string, 9th fret" id="note-4-9">G#</div>
+    <div class="fret-circle root fret11 string4" title="A# - 3rd string, 11th fret" id="note-4-11">A#</div>
+    <div class="fret-circle  fret13 string4" title="C - 3rd string, 13th fret" id="note-4-13">C</div>
+    <div class="fret-circle  fret15 string4" title="D - 3rd string, 15th fret" id="note-4-15">D</div>
+    <div class="fret-circle  fret17 string4" title="E - 3rd string, 17th fret" id="note-4-17">E</div>
+    <div class="fret-circle  fret19 string4" title="F# - 3rd string, 19th fret" id="note-4-19">F#</div>
+    <div class="fret-circle  fret21 string4" title="G# - 3rd string, 21th fret" id="note-4-21">G#</div>
+      <div class="stringLabel" style="top:22px">E</div>
+    <div class="fret-circle open fret0 string5" title="E - 2nd string, open string" id="note-5-0">E</div>
+    <div class="fret-circle  fret2 string5" title="F# - 2nd string, 2nd fret" id="note-5-2">F#</div>
+    <div class="fret-circle  fret4 string5" title="G# - 2nd string, 4th fret" id="note-5-4">G#</div>
+    <div class="fret-circle root fret6 string5" title="A# - 2nd string, 6th fret" id="note-5-6">A#</div>
+    <div class="fret-circle  fret8 string5" title="C - 2nd string, 8th fret" id="note-5-8">C</div>
+    <div class="fret-circle  fret10 string5" title="D - 2nd string, 10th fret" id="note-5-10">D</div>
+    <div class="fret-circle  fret12 string5" title="E - 2nd string, 12th fret" id="note-5-12">E</div>
+    <div class="fret-circle  fret14 string5" title="F# - 2nd string, 14th fret" id="note-5-14">F#</div>
+    <div class="fret-circle  fret16 string5" title="G# - 2nd string, 16th fret" id="note-5-16">G#</div>
+    <div class="fret-circle root fret18 string5" title="A# - 2nd string, 18th fret" id="note-5-18">A#</div>
+    <div class="fret-circle  fret20 string5" title="C - 2nd string, 20th fret" id="note-5-20">C</div>
+
+
+    <div class="selector" id="selector" onmousedown="javascript:mouseDown(event.clientX)"></div>
+   </div>
+  </div>
+
+  <div class="tabDiv">
+	    <div class="tab" id="id_tabDiv">
+	      <table class="tabTable" id="id_tabTable">
+		  <tr><td></tr>
+		  <tr><td></tr>
+		  <tr><td></tr>
+		  <tr><td></tr>
+		  <tr><td></tr>
+
+	      </table>
+	      <span id="id_tabList" class="tabNumbers">
+	      </span>
+              <img src="/images/tab.gif" style="position:absolute; top:0; left:0; height:75px"/>
+      <div class="tabLabel" style="top:69px">E</div>
+      <div class="tabLabel" style="top:53px">A</div>
+      <div class="tabLabel" style="top:38px">D</div>
+      <div class="tabLabel" style="top:23px">G</div>
+      <div class="tabLabel" style="top:8px">B</div>
+      <div class="tabLabel" style="top:-6px">E</div>
+
+	    </div>
+
+  </div>
+
+  <div class="staffDiv" id="id_tab_td">
+   <div class="staff" id="id_staffDiv">
+    <table>
+     <tr><td></tr>
+     <tr><td></tr>
+     <tr><td></tr>
+     <tr><td></tr>
+    </table>
+    <img src="/images/trebleclef.gif" style="position:absolute; top:0; left:1px"/>
+    <span id="id_keySignature" class="keySignature">
+     <img src="/images/sharp.gif" style="position:absolute; left:20px; top:-19px" title="F sharp"/>
+<img src="/images/sharp.gif" style="position:absolute; left:25px; top:11px" title="G sharp"/>
+<img src="/images/sharp.gif" style="position:absolute; left:30px; top:6px" title="A sharp"/>
+
+    </span>
+    <div id="id_staffMessage"
+	 style="position:absolute; top:77px; left:0; font-family:serif; font-size:12px; vertical-align:bottom;">
+     Note: Octave may be adjusted to better fit staff.
+    </div>
+    <span id="id_staffList"></span>
+   </div>
+  </div>
+
+  </center>
+
+  <br/>
+  <div class="chicletSection">
+    <div class="selectors bottomForm">
+      <div class="activeApp">
+
+    <center>
+      <form class="entryForm" method="get" action="http://www.scalerator.com/"
+       onSubmit="submitting()">
+	<input  type="hidden" id="id_optionsDisp" name="optionsDisp" value="none">
+	<input  type="hidden" id="id_selLeft" name="selLeft" value="0">
+	<input  type="hidden" id="id_menuTab" name="menuTab" value="instructions">
+	Next scale:
+	  <select id="id_root" name="root">
+	    <option value="A" >A</option>
+	    <option value="A#" SELECTED>A#/Bb</option>
+	    <option value="B" >B</option>
+	    <option value="C" >C</option>
+	    <option value="C#" >C#/Db</option>
+	    <option value="D" >D</option>
+	    <option value="D#" >D#/Eb</option>
+	    <option value="E" >E</option>
+	    <option value="F" >F</option>
+	    <option value="F#" >F#/Gb</option>
+	    <option value="G" >G</option>
+	    <option value="G#" >G#/Ab</option>
+	  </select>
+	  <select id="id_pattern" name="pattern">
+	    <option value="major" >major</option>
+	    <option value="pentatonic minor" >pentatonic minor</option>
+	    <option value="blues" >blues</option>
+	    <option value="pentatonic major" >pentatonic major</option>
+	    <option value="natural minor" >natural minor</option>
+	    <option value="harmonic minor" >harmonic minor</option>
+	    <option value="melodic minor (ascending)" >melodic minor (ascending)</option>
+	    <option value="melodic minor (descending)" >melodic minor (descending)</option>
+	    <option value="dorian" >dorian</option>
+	    <option value="phrygian" >phrygian</option>
+	    <option value="lydian" >lydian</option>
+	    <option value="mixolydian" >mixolydian</option>
+	    <option value="locrian" >locrian</option>
+	    <option value="arabic" >arabic</option>
+	    <option value="hungarian gypsy" >hungarian gypsy</option>
+	    <option value="whole tone" SELECTED>whole tone</option>
+	    <option value="augmented" >augmented</option>
+	    <option value="phrygian dominant" >phrygian dominant</option>
+      </select>
+	<div id="moreOptions" class="advanced" style="display:none">
+	<a id="hideOptions" href="#" onclick="javascript:return showFewerOptions()"
+	   title="Hide the extra options">&#x25BC; Fewer options</a>
+
+	<p>How is your instrument tuned?
+	  <select id="id_tuningName" onchange="tuningNameChanged()">
+	    <option value="EADGBE"selected="selected">Guitar Standard</option>
+	    <option value="EADG">Bass Guitar</option>
+	    <option value="GDAE">Mandolin</option>
+	    <option value="GDGBD">5-String Banjo</option>
+	    <option value="DADGBE">Guitar Dropped D</option>
+	    <option value="DADGAD">Guitar DADGAD</option>
+	    <option value="DGDGBD">Guitar Open G</option>
+	    <option value="DADF#AD">Guitar Open D</option>
+	    <option value="EBEGBE">Guitar Open Em</option>
+	    <option value="EbAbDbGbBbEb">Guitar Detuned 1/2-step</option>
+	    <option value="BEADGBE">7-String Guitar</option>
+	    <option value="BEADG">5-String Bass Guitar</option>
+	    <option value="BEADGC">6-String Bass Guitar</option>
+	    <option value="&lt;Custom&gt;">&lt;Custom&gt;</option>
+	</select>
+	  or customize:
+	  <input size="10" id="id_tuning" name="tuning" class="txt" value="EADGBE" type="text" onkeyup="tuningChanged()">
+	</p>
+
+	<p>Size:
+	  <label><input type="radio" name="size" value="20" >Small</label>
+	  <label><input type="radio" name="size" value="30" CHECKED>Medium</label>
+	  <label><input type="radio" name="size" value="50" >Large</label>
+	</p>
+      </div>
+	<input value="Scalerate" id="id_submitButton" alt="go" title="go" class="btn" type="submit">
+	<span id="showOptions" style="display:inline">
+	  <a id="aShowOptions" href="#" onclick="javascript:return showMoreOptions()"
+	     title="Set an alternate tuning or adjust the size">&#x25BA; More options</a>
+	</span>
+      </form>
+    </center>
+      </div>
+    </div> 
+  </div> 
+
+    <footer>
+	&#169; 2007-2015 <a href="http://www.chickenwingsoftware.com">Chicken
+	Wing Software</a>, all rights reserved.
+    </footer>
+  </div> 
+  
+  <div id="adsense">
+  </div>
+    </div>
+   </center>
+  </body>
+</html>
