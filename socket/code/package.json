@@ -5,6 +5,7 @@
   "dependencies": {
     "@google-cloud/translate": "^5.3.0",
     "body-parser": "^1.19.0",
+    "bufferutil": "^4.0.1",
     "callfire": "^0.2.0",
     "callfire-api-client-js": "0.0.4",
     "cheerio": "^1.0.0-rc.3",
@@ -17,9 +18,10 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "request": "^2.88.2",
     "socket.io": "^2.3.0",
-    "stripe": "^5.3.0"
+    "stripe": "^5.3.0",
+    "utf-8-validate": "^5.0.2",
+    "winston": "^3.2.1"
   },
-  "devDependencies": {},
   "browserslist": [
     ">0.2%",
     "not dead",

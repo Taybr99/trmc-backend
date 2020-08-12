@@ -1,0 +1,58 @@
+# Deploy the code to server with gitlab pipeline
+image: node:8.11.3
+
+#This command is run before actual stages start running
+before_script:
+  - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+  - mkdir -p ~/.ssh
+  - eval $(ssh-agent -s)
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+#  - sudo apt-get update -qy
+  - sudo apt-get install sshpass
+  - sudo apt-get install -y rsync 
+  - cd code
+
+cache:
+  untracked: true
+  key: "$CI_BUILD_REF_NAME"
+  paths:
+   - code/node_modules/
+
+stages:
+  - deploy
+
+# deploying to staging server for testing
+deployToStagingServerForTesting:
+  stage: deploy
+  script:
+    - sshpass -p "$DEVELOP_SERVER_TESTER_PASSWORD" rsync -rav -e 'ssh -o StrictHostKeyChecking=no -p 22' --exclude='.git/' --exclude='.gitlab-ci.yml' . $DEVELOP_SERVER_TESTER_USER_NAME@$DEVELOP_SERVER_TESTER_HOST:$DEVELOP_SERVER_TESTER_BUILD_PATH
+    - cd ../
+    - sed -i "s|<SERVER_BUILD_PATH>|$DEVELOP_SERVER_TESTER_BUILD_PATH|g" ./ops/update-restart-deploy-staging-tester.sh
+    - sed -i "s|<CI_PROJECT_NAME>|$CI_PROJECT_NAME|g" ./ops/update-restart-deploy-staging-tester.sh
+    - sshpass -p "$DEVELOP_SERVER_TESTER_PASSWORD" ssh $DEVELOP_SERVER_TESTER_USER_NAME@$DEVELOP_SERVER_TESTER_HOST 'bash' < ./ops/update-restart-deploy-staging-tester.sh
+  only:
+    - develop
+
+# deploying to staging server for client testing
+deployToStagingServerForClient:
+  stage: deploy
+  script:
+    - sshpass -p "$DEVELOP_SERVER_TESTER_PASSWORD" rsync -rav -e 'ssh -o StrictHostKeyChecking=no -p 22' --exclude='.git/' --exclude='.gitlab-ci.yml' . $DEVELOP_SERVER_TESTER_USER_NAME@$DEVELOP_SERVER_TESTER_HOST:$RELEASE_SERVER_TESTER_BUILD_PATH
+    - cd ../
+    - sed -i "s|<SERVER_BUILD_PATH>|$RELEASE_SERVER_TESTER_BUILD_PATH|g" ./ops/update-restart-deploy-staging-client.sh
+    - sed -i "s|<CI_PROJECT_NAME>|$CI_PROJECT_NAME|g" ./ops/update-restart-deploy-staging-client.sh
+    - sshpass -p "$DEVELOP_SERVER_TESTER_PASSWORD" ssh $DEVELOP_SERVER_TESTER_USER_NAME@$DEVELOP_SERVER_TESTER_HOST 'bash' < ./ops/update-restart-deploy-staging-client.sh
+  only:
+    - /^release-.*/
+
+# deploying to live client server
+deployToClientServerForLive:
+  stage: deploy
+  script:
+    - cd ../
+    - sshpass -p "$LIVE_SERVER_CLIENT_PASSWORD" rsync -O --exclude='.git/' --exclude='.gitlab-ci.yml' -rav -e 'ssh -o StrictHostKeyChecking=no -p 22' . $LIVE_SERVER_CLIENT_USER_NAME@$LIVE_SERVER_CLIENT_HOST:$LIVE_SERVER_CLIENT_BUILD_PATH
+    - sed -i "s|<SERVER_BUILD_PATH>|$LIVE_SERVER_CLIENT_BUILD_PATH|g" ./ops/update-restart-deploy-client-server.sh
+    - sed -i "s|<CI_PROJECT_NAME>|$CI_PROJECT_NAME|g" ./ops/update-restart-deploy-client-server.sh
+    - sshpass -p "$LIVE_SERVER_CLIENT_PASSWORD" ssh $LIVE_SERVER_CLIENT_USER_NAME@$LIVE_SERVER_CLIENT_HOST 'bash' < ./ops/update-restart-deploy-client-server.sh
+  only:
+    - master

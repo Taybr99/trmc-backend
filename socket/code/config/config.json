@@ -1,0 +1,50 @@
+{
+  "dev": {
+    "username": "web",
+    "password": "GE8cknNjXnH9xFuG",
+    "database": "nabedish",
+    "host": "192.168.0.28",
+    "dialect": "postgres",
+    "stripeId": "sk_test_YffIre0bAcSdkJN7Q1f1tJho",
+    "smtp": {
+      "host":"smtp.gmail.com",
+      "port":465,
+      "auth": {
+        "user": "noreply@trmc-lessons.com",
+        "pass": "TRMC2360!"
+      }
+    }
+  },
+  "test": {
+    "username": "web",
+    "password": "GE8cknNjXnH9xFuG",
+    "database": "nabedish",
+    "host": "192.168.0.28",
+    "dialect": "postgres",
+    "stripeId": "sk_test_YffIre0bAcSdkJN7Q1f1tJho",
+    "smtp": {
+      "host":"smtp.gmail.com",
+      "port":465,
+      "auth": {
+        "user": "noreply@trmc-lessons.com",
+        "pass": "TRMC2360!"
+      }
+    }
+  },
+  "prod": {
+    "username": "web",
+    "password": "GE8cknNjXnH9xFuG",
+    "database": "nabedish",
+    "host": "192.168.0.28",
+    "dialect": "postgres",
+    "stripeId": "sk_test_YffIre0bAcSdkJN7Q1f1tJho",
+    "smtp": {
+      "host":"smtp.gmail.com",
+      "port":465,
+      "auth": {
+        "user": "noreply@trmc-lessons.com",
+        "pass": "TRMC2360!"
+      }
+    }
+  }
+}
