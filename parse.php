@@ -22,7 +22,7 @@ $string = base64_decode($argv[1]);
           //   //    $x++;
           // }
             
-         $ulr = "https://web.oneclickwebcam.com:3000/guitar-scale-page/".$value.".html";      
+         $ulr = "https://live.realtimeaudio.com:3000/guitar-scale-page/".$value.".html";      
          $data = file_get_contents($ulr);
   
          	echo  $data;exit;

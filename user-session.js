@@ -46,7 +46,7 @@ UserSession.prototype.sendMessage = function (data) {
     this.socket.emit('message', data);
 };
 
-UserSession.prototype.setRoomName = function (roomName){
+UserSession.prototype.setRoomName = function (roomName) {
     this.roomName = roomName;
 }
 

@@ -1,0 +1,351 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.",
+    "version": "1.0.0",
+    "title": "Swagger Petstore",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "petstore.swagger.io",
+  "basePath": "/v2",
+  "tags": [
+    {
+      "name": "user",
+      "description": "users"
+    },
+    {
+      "name": "chat",
+      "description": "chat"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/add-user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "add user nd room",
+        "description": "",
+        "operationId": "addUser",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addUser"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/leave-room": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "leave room api to update participants left at",
+        "description": "",
+        "operationId": "leaveRoom",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User id and room name",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/leaveRoom"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/secondary-moderator": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "make participant a secondary moderator",
+        "description": "",
+        "operationId": "secondaryModerator",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User id and room name",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/leaveRoom"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/webjam-connected": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "when user connects to a webjam device",
+        "description": "",
+        "operationId": "webjamConnected",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User id and room name",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/leaveRoom"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/send-message": {
+      "post": {
+        "tags": [
+          "chat"
+        ],
+        "summary": "make participant a secondary moderator",
+        "description": "",
+        "operationId": "sendMessage",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "message related data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sendMessage"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "leaveRoom": {
+      "type": "object",
+      "required": [
+        "user_id",
+        "roomname"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "roomname": {
+          "type": "string",
+          "example": "david"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "addUser": {
+      "type": "object",
+      "required": [
+        "email",
+        "oneclick_room_id"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "dsmolover@achievemusic.com"
+        },
+        "oneclick_room_id": {
+          "type": "string",
+          "example": "david"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 13
+        },
+        "firstname": {
+          "type": "string",
+          "example": "David"
+        },
+        "lastname": {
+          "type": "string",
+          "example": "Smolover"
+        },
+        "pike13_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 6717622
+        },
+        "school_id": {
+          "type": "string",
+          "example": "sor-demo"
+        },
+        "teacher": {
+          "type": "boolean",
+          "example": true
+        },
+        "student": {
+          "type": "boolean",
+          "example": false
+        },
+        "admin": {
+          "type": "boolean",
+          "example": true
+        },
+        "iat": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1612981503
+        },
+        "blacklist": {
+          "type": "boolean",
+          "example": false
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "sendMessage": {
+      "type": "object",
+      "required": [
+        "user_id",
+        "roomname",
+        "message",
+        "message_type"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "roomname": {
+          "type": "string",
+          "example": "david"
+        },
+        "message": {
+          "type": "string",
+          "example": "hello"
+        },
+        "message_type": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        }
+      },
+      "xml": {
+        "name": "Chat"
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "boolean"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

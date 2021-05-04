@@ -1,10 +1,12 @@
 {
-	"prod" : {
-        "db" : "mongodb://taybr99:TRMC2360@ds117946-a0.mlab.com:17946,ds117946-a1.mlab.com:17946/trmcie?replicaSet=rs-ds117946",
-        "port" : 3000
-	},
-	"dev" : {
-        "db" : "mongodb://localhost:27017/trmcIE",
-        "port" : 7997
-	}
+        "prod": {
+                "db": "mongodb+srv://realtimeuser:realtimeuser@realtime-uat.zb2xz.mongodb.net/realtime-uat?retryWrites=true&w=majority",
+                "port": 3000,
+                "JWTsecret": "fd19e9a9c39f9db1ec54add9fdc68443"
+        },
+        "dev": {
+                "db": "mongodb+srv://realtimeuser:realtimeuser@realtime-uat.zb2xz.mongodb.net/SOR-uat?retryWrites=true&w=majority",
+                "port": 7999,
+                "JWTsecret": "fd19e9a9c39f9db1ec54add9fdc68443"
+        }
 }
